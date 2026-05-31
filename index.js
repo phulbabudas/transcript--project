@@ -3,78 +3,65 @@ import express from "express";
 import fs from "fs";
 import { generateTranscript } from "./transcriptGenerator.js";
 import { summarizeTranscript } from "./transcriptSummarizer.js";
-
+import connectDB from "./database.js";
+import Transcript from "./models.js";
 const app = express();
 
 app.use(express.json());
+connectDB();
 // API 1 → GENERATE TRANSCRIPT
 app.post("/generate-transcript", async (req, res) => {
-
   try {
-
     const transcript = await generateTranscript();
-
-    fs.writeFileSync(
-      "./transcript.txt",
-      transcript
-    );
+    await Transcript.create({
+      transcript,
+    });
 
     res.status(200).json({
       success: true,
       message: "Transcript generated successfully",
-      transcript
+      transcript,
     });
-
   } catch (error) {
-
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
-
   }
 });
 // API 2 → GENERATE SUMMARY
 app.post("/generate-summary", async (req, res) => {
-
   try {
-
     const { transcript } = req.body;
 
     if (!transcript) {
-
       return res.status(400).json({
         success: false,
-        message: "Transcript is required"
+        message: "Transcript is required",
       });
-
     }
+        const transcripts = await Transcript.find();
 
     const summary = await summarizeTranscript(transcript);
 
-    fs.writeFileSync(
-      "./summary.md",
-      summary
-    );
+    // SAVE TO DATABASE
+    await Transcript.create({
+      transcript,
+      summary,
+    });
 
     res.status(200).json({
       success: true,
       message: "Summary generated successfully",
-      summary
+      summary,
     });
-
   } catch (error) {
-
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
-
   }
-
 });
 app.listen(3000, () => {
-
   console.log("Server running on port 3000");
-
 });

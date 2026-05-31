@@ -49,7 +49,7 @@ export async function summarizeTranscript(transcriptText) {
         }
       ],
 
-      temperature: 0.5
+      temperature: 0.1
 
     });
 

@@ -37,7 +37,7 @@ export async function generateTranscript() {
         }
       ],
 
-      temperature: 0.8
+      temperature: 0.
 
     });
 
