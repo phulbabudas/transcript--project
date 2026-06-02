@@ -12,6 +12,7 @@
       Express.js
       OpenAI API
       dotenv
+      LangChain
  (4.) Error Handling
       Invalid API key handling
       Server error responses
@@ -19,3 +20,14 @@
 
  (5.) Project flow image.png   
       ![alt text](image.png)
+
+LangChain integration
+- **Setup**: create a `.env` file in the project root with `OPENAI_API_KEY=your_key`.
+- **Install**: dependencies are listed in `package.json` (includes `langchain` and `openai`).
+- **Test summarizer**: run the local test (reads `transcript.txt`):
+
+```bash
+npm run test-summarizer
+```
+
+If you want the project to use LangChain-based summarization in the API, the `/generate-summary` endpoint already calls the summarizer in `transcriptSummarizer.js`.

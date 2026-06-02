@@ -5,14 +5,17 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test-summarizer": "node testSummarizer.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@langchain/openai": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "langchain": "^1.4.4",
     "mongoose": "^8.24.0",
     "openai": "^6.39.1"
   },
