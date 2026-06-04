@@ -10,24 +10,21 @@ const llm = new ChatOpenAI({
 });
 
 const template = `
-Analyze the following customer support transcript
-and create a structured markdown summary.
+You are writing a simple, human-friendly customer support summary.
 
-Format:
+Please summarize the transcript in clear plain English with these sections:
 
 ## Call Reason
-One short paragraph.
+Write 2-3 lines about why the customer called.
 
 ## Key Discussion Points
-- Point 1
-- Point 2
+List the most important points in bullet form.
 
 ## Action Items / Next Steps
-- Action 1
-- Action 2
+List what was promised, fixed, or needs to happen next.
 
 ## Sentiment Analysis
-Mention customer sentiment.
+Briefly describe the customer mood and the tone of the conversation.
 
 Transcript:
 {transcript}
@@ -49,7 +46,13 @@ export async function summarizeTranscript(
       transcript: transcriptText,
     });
 
-    return result.content;
+    if (typeof result?.content === "string") {
+      return result.content;
+    }
+
+    return typeof result?.content === "object"
+      ? JSON.stringify(result.content, null, 2)
+      : String(result?.content ?? "Unable to summarize transcript.");
 
   } catch (error) {
 

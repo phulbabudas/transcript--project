@@ -31,3 +31,12 @@ npm run test-summarizer
 ```
 
 If you want the project to use LangChain-based summarization in the API, the `/generate-summary` endpoint already calls the summarizer in `transcriptSummarizer.js`.
+
+Postman quick test:
+1. Run `npm start`.
+2. Open `GET http://localhost:3000/health` to confirm the API is alive.
+3. Open `POST http://localhost:3000/generate-summary` with JSON body:
+   {
+     "transcript": "Paste your transcript text here"
+   }
+4. You should receive a JSON response with `success: true` and a human-friendly summary.

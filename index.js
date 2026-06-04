@@ -9,6 +9,18 @@ const app = express();
 
 app.use(express.json());
 connectDB();
+
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "Transcript API is running. Use /generate-transcript or /generate-summary.",
+  });
+});
+
+app.get("/health", (req, res) => {
+  res.json({ success: true, message: "API is healthy" });
+});
+
 // API 1 → GENERATE TRANSCRIPT
 app.post("/generate-transcript", async (req, res) => {
   try {
@@ -32,19 +44,19 @@ app.post("/generate-transcript", async (req, res) => {
 // API 2 → GENERATE SUMMARY
 app.post("/generate-summary", async (req, res) => {
   try {
-    const { transcript } = req.body;
+    const transcript = typeof req.body?.transcript === "string"
+      ? req.body.transcript.trim()
+      : "";
 
     if (!transcript) {
       return res.status(400).json({
         success: false,
-        message: "Transcript is required",
+        message: "Transcript is required and must be a non-empty string.",
       });
     }
-        const transcripts = await Transcript.find();
 
     const summary = await summarizeTranscript(transcript);
 
-    // SAVE TO DATABASE
     await Transcript.create({
       transcript,
       summary,
